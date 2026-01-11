@@ -1,25 +1,67 @@
 package modell;
 
-public class Feladat {
-    private int sor, oszlop;
-    private int[][] matrixA, matrixB;
+import java.util.Random;
 
-    public Feladat(int sor, int oszlop){
+public class Feladat {
+
+    private int sor;
+    private int oszlop;
+    private int[][] matrixA;
+    private int[][] matrixB;
+
+    public Feladat(int sor, int oszlop) {
         this.sor = sor;
         this.oszlop = oszlop;
         matrixA = new int[sor][oszlop];
         matrixB = new int[sor][oszlop];
         feltolt();
     }
-    
-    public void feltolt(){
-        feltoltA();
+
+    // mátrixok feltöltése [-10;25] intervallumból
+    private void feltolt() {
+        feltoltMatrix(matrixA);
+        feltoltMatrix(matrixB);
     }
 
-    private void feltoltA() {
+    private void feltoltMatrix(int[][] matrix) {
+        Random rnd = new Random();
+        for (int i = 0; i < sor; i++) {
+            for (int j = 0; j < oszlop; j++) {
+                matrix[i][j] = rnd.nextInt(36) - 10;
+            }
+        }
     }
 
-    public void osszead(){
-        //itt nem lehet null
+    // mátrixok összeadása (0 kizárva)
+    public int[][] osszead() {
+        int[][] eredmeny = new int[sor][oszlop];
+        for (int i = 0; i < sor; i++) {
+            for (int j = 0; j < oszlop; j++) {
+                int osszeg = matrixA[i][j] + matrixB[i][j];
+                if (osszeg == 0) {
+                    osszeg = 1; // 0 kizárása
+                }
+                eredmeny[i][j] = osszeg;
+            }
+        }
+        return eredmeny;
+    }
+
+    // mátrix kiírása
+    public void kiir(int[][] matrix) {
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.printf("%4d", matrix[i][j]);
+            }
+            System.out.println();
+        }
+    }
+
+    public int[][] getMatrixA() {
+        return matrixA;
+    }
+
+    public int[][] getMatrixB() {
+        return matrixB;
     }
 }
